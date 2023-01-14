@@ -1,0 +1,31 @@
+* {
+    justify-content: center;
+    text-align: center;
+}
+.TTT-Board {
+    display: grid;
+    justify-content: center;
+    grid-template-rows: 10vmin 10vmin 10vmin;
+    grid-template-columns: 10vmin 10vmin 10vmin;
+}
+
+.TTT-Zone {
+    border: 1px solid;
+    justify-content: center;
+    align-items: center;
+}
+
+#Zone-1, #Zone-2, #Zone-3 {
+    border-top-color: transparent;
+}
+#Zone-3, #Zone-6, #Zone-9 {
+    border-right-color: transparent
+}
+
+#Zone-9, #Zone-8, #Zone-7 {
+    border-bottom-color: transparent
+}
+
+#Zone-7, #Zone-4, #Zone-1 {
+    border-left-color: transparent;
+}
