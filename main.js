@@ -4,7 +4,7 @@ const SHAPES = {
     '1' : 'X',
     '-1' : 'O'
 }
-
+const zones = document.querySelectorAll(".TTT-Zone")
 
 /*----- state variables -----*/
 let board;
@@ -16,7 +16,15 @@ const messageEl = document.querySelector('h1');
 const playAgainBtn = document.querySelector('button');
 
 /*----- event listeners -----*/
-
+zones.forEach(function(zone) {
+    zone.addEventListener("click", function() {
+        let coordfinder = event.target.id.split("");
+        let boardCol = parseInt([coordfinder[5]]);
+        let boardRow = parseInt([coordfinder[7]]);
+        board[boardCol][boardRow] = turn;
+        render();
+    })
+})
 /*----- functions -----*/
 init();
 function init() {
@@ -44,3 +52,4 @@ function renderBoard() {
         });
     });
 }
+
