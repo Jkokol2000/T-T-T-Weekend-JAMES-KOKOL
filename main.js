@@ -4,25 +4,30 @@ const SHAPES = {
     '1' : 'X',
     '-1' : 'O'
 }
-const zones = document.querySelectorAll(".TTT-Zone")
+
 
 /*----- state variables -----*/
 let board;
 let turn;
 let winner;
-
 /*----- cached elements  -----*/
 const messageEl = document.querySelector('h1');
 const playAgainBtn = document.querySelector('button');
-
+const zones = document.querySelectorAll(".TTT-Zone")
 /*----- event listeners -----*/
 zones.forEach(function(zone) {
     zone.addEventListener("click", function() {
+        
         let coordfinder = event.target.id.split("");
         let boardCol = parseInt([coordfinder[5]]);
         let boardRow = parseInt([coordfinder[7]]);
-        board[boardCol][boardRow] = turn;
+        if (board[boardCol][boardRow] !== 0) {
+            return
+        } else {
+            board[boardCol][boardRow] = turn;
+        }
         render();
+        changeTurn();
     })
 })
 /*----- functions -----*/
@@ -39,6 +44,7 @@ render();
 }
 function render() {
     renderBoard();
+    renderMessage();
 }
 function randomPlayer() {
     return Math.floor(Math.random() > 0.5 ? 1 : -1);
@@ -51,5 +57,13 @@ function renderBoard() {
             cellEl.innerHTML = SHAPES[cellVal];
         });
     });
+}
+
+function renderMessage() {
+    return messageEl.innerHTML = `${SHAPES[turn]}'s Turn!`;
+}
+function changeTurn() {
+    turn = turn * -1;
+    renderMessage();
 }
 
