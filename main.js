@@ -1,8 +1,8 @@
 /*----- constants -----*/
 const SHAPES = {
-    '0' : '',
-    '1' : 'X',
-    '-1' : 'O'
+    '0' : '', // Empty Cell
+    '1' : 'X', // Player 1 Shape
+    '-1' : 'O' // Player 2 Shape
 }
 const WINSTATES = [
     [[0,0],[0,1],[0,2]], /// First Row Horizontal Win
@@ -25,18 +25,20 @@ const playAgainBtn = document.querySelector('button');
 const zones = document.querySelectorAll(".TTT-Zone")
 /*----- event listeners -----*/
 zones.forEach(function(zone) {
-    zone.addEventListener("click", function() {
+    zone.addEventListener("click", function(evt) {
         if (winner !== null) {
             return
         } else {
-        let coordfinder = event.target.id.split("");
+        let coordfinder = evt.target.id.split("");
         let boardCol = parseInt([coordfinder[5]]);
         let boardRow = parseInt([coordfinder[7]]);
         if (board[boardCol][boardRow] !== 0) {
             return
         } else {
             board[boardCol][boardRow] = turn;
+            
         }
+        findWinner();
         render();
         changeTurn();
     }})
@@ -57,9 +59,10 @@ winner = null;
 render();
 }
 function render() {
-    renderPlayAgain();
     renderBoard();
+    renderPlayAgain();
     renderMessage();
+    
 }
 function randomPlayer() {
     return Math.floor(Math.random() > 0.5 ? 1 : -1);
@@ -70,18 +73,22 @@ function renderBoard() {
             const cellId = `Zone-${colIdx}-${rowIdx}`
             const cellEl = document.getElementById(cellId);
             cellEl.innerHTML = SHAPES[cellVal];
+
         });
+    
     });
 }
 function renderMessage(){
-    findWinner();
     if(winner !== null) {
-    return messageEl.innerHTML = `${SHAPES[winner]} Wins!`;
-} else if (winner === "T") {
-    return messageEl.innerHTML = "It's a tie???"
-} else {
-    return messageEl.innerHTML = `${SHAPES[turn]}'s Turn!`;
-}
+        if (winner === 'T') {
+            return messageEl.innerHTML = "It's a tie???"
+        } else {
+            return messageEl.innerHTML = `${SHAPES[winner]} Wins!`;
+        }
+    } else {
+        return messageEl.innerHTML = `${SHAPES[turn]}'s Turn!`
+    }
+
 
 }
 function renderPlayAgain() {
@@ -94,9 +101,17 @@ function renderPlayAgain() {
     }
 }
 function changeTurn() {
+    
+    boardFull = checkFullBoard();
+    if (boardFull === true) {
+        winner === "T"
+    } else {
     turn = turn * -1;
+    render();
     renderMessage();
     renderPlayAgain();
+    findWinner();
+    }
 }
 function findWinner() {
     for (let i =  0; i < WINSTATES.length; i++) {
@@ -106,21 +121,29 @@ function findWinner() {
         let c = board[winstate[2][0]][winstate[2][1]];
         if (a === b && b === c && a !== 0) {
             winner = a;
-            break;
+            return;
         }
     }
-    if (!winner) {
-        let isDraw = true;
+        let emptyCells = 0;
         for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
+            for (let j = 0; j < 3; j++){
                 if (board[i][j] === 0) {
-                    isDraw = false;
-                    break;
+                    emptyCells++;
                 }
             }
         }
-        if (isDraw) winner = "T";
+        if (emptyCells === 0 && winner === null) {
+            winner = "T";
+        }
     }
+
+function checkFullBoard() {
+    for(let i = 0; i < board.length; i++) {
+        for(let j = 0; i < board.length; i++) {
+            if (board[i][j] === 0) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
-
-
