@@ -62,7 +62,6 @@ function render() {
     renderBoard();
     renderPlayAgain();
     renderMessage();
-    
 }
 function randomPlayer() {
     return Math.floor(Math.random() > 0.5 ? 1 : -1);
@@ -101,45 +100,43 @@ function renderPlayAgain() {
     }
 }
 function changeTurn() {
-    
+    if (winner !== null) {
+        return;
+    }
     boardFull = checkFullBoard();
     if (boardFull === true) {
-        winner === "T"
+        winner = "T"
+        render();
     } else {
     turn = turn * -1;
     render();
-    renderMessage();
-    renderPlayAgain();
-    findWinner();
     }
 }
 function findWinner() {
+    // Loop Through all the possible winning combinations
     for (let i =  0; i < WINSTATES.length; i++) {
-        let winstate = WINSTATES[i];
-        let a = board[winstate[0][0]][winstate[0][1]];
-        let b = board[winstate[1][0]][winstate[1][1]];
-        let c = board[winstate[2][0]][winstate[2][1]];
-        if (a === b && b === c && a !== 0) {
-            winner = a;
-            return;
-        }
-    }
-        let emptyCells = 0;
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++){
-                if (board[i][j] === 0) {
-                    emptyCells++;
-                }
+        let win = true;
+        // loop through all cells in the current winning combination
+        for (let j = 0; j < WINSTATES[i].length; j++) {
+            let x = WINSTATES[i][j][0]
+            let y = WINSTATES[i][j][1];
+            // check if the value of the cell matches the current turn
+            if (board[x][y] !== turn){
+                win = false;
+                break
             }
         }
-        if (emptyCells === 0 && winner === null) {
-            winner = "T";
+        // if all the cell values in the winning combination match the current turn,
+        // set the winner to the current turn
+        if (win) {
+            winner = turn;
+            return
         }
     }
-
+}
 function checkFullBoard() {
     for(let i = 0; i < board.length; i++) {
-        for(let j = 0; i < board.length; i++) {
+        for(let j = 0; j < board[i].length; j++) {
             if (board[i][j] === 0) {
                 return false;
             }
