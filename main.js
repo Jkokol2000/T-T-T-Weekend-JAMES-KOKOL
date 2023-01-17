@@ -71,12 +71,11 @@ function renderBoard() {
         colArr.forEach(function(cellVal, rowIdx) {
             const cellId = `Zone-${colIdx}-${rowIdx}`
             const cellEl = document.getElementById(cellId);
-            cellEl.innerHTML = SHAPES[cellVal];
-
+            cellEl.innerHTML = `<span class="shape ${cellVal === 1 ? 'blue' : 'red'}">${SHAPES[cellVal]}</span>`;
         });
-    
     });
 }
+
 function renderMessage(){
     if(winner !== null) {
         if (winner === 'T') {
@@ -87,7 +86,6 @@ function renderMessage(){
     } else {
         return messageEl.innerHTML = `${SHAPES[turn]}'s Turn!`
     }
-
 
 }
 function renderPlayAgain() {

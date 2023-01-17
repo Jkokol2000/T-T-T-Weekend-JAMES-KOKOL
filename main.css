@@ -1,6 +1,8 @@
 * {
     justify-content: center;
     text-align: center;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-weight: 500;
 }
 .TTT-Board {
     display: grid;
@@ -13,6 +15,7 @@
     border: 1px solid;
     justify-content: center;
     align-items: center;
+    font-size: 8vmin;
 }
 
 #Zone-0-0, #Zone-0-1, #Zone-0-2 {
@@ -28,4 +31,11 @@
 
 #Zone-2-0, #Zone-1-0, #Zone-0-0 {
     border-left-color: transparent;
+}
+
+.red {
+    color: red;
+}
+.blue {
+    color: blue;
 }
